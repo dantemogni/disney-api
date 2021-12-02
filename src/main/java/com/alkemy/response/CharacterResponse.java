@@ -1,32 +1,28 @@
 package com.alkemy.response;
 
+import com.alkemy.entity.Character;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CharacterResponse {
 
-	public String name, color;
-	public int id;
-	
-	public CharacterResponse(int id, String name, String color) {
-		this.name = name;
-		this.color = color;
-		this.id = id;
+	private Long id;
+	private String image;
+	private String name;
+	private Integer age;
+	private Double weight;
+	private String story;
+
+	public CharacterResponse(Character character) {
+		this.id = character.getId();
+		this.image = character.getImage();
+		this.name = character.getName();
+		this.age = character.getAge();
+		this.weight = character.getWeight();
+		this.story = character.getStory();
 	}
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getColor() {
-		return color;
-	}
-	public void setColor(String color) {
-		this.color = color;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 }
