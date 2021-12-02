@@ -18,7 +18,7 @@ public class CharacterController {
 	@Autowired
 	CharacterService characterService;
 	
-	@GetMapping("/getAll")
+	@GetMapping()
 	public List<CharacterResponse> getAllCharacters() {
 		List<Character> characterList = characterService.getAllCharacters();
 		List<CharacterResponse> characterResponseList = new ArrayList<CharacterResponse>();
