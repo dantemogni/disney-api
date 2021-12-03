@@ -56,4 +56,7 @@ public class CharacterService {
 		characterRepository.deleteById(id);
 		return "Character has been deleted";
 	}
+	public List<Character> getByName(String name){
+		return characterRepository.findByName(name);
+	}
 }

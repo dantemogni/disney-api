@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.entity.Character;
@@ -39,6 +40,19 @@ public class CharacterController {
 		return characterResponseList;
 	}
 	
+	@GetMapping(params = "name")
+	public List<CharacterResponse> getByName(@RequestParam String name) {
+		List<Character> characterList = characterService.getByName(name);
+		List<CharacterResponse> characterResponseList = new ArrayList<CharacterResponse>();
+		
+		characterList.stream().forEach(character -> {
+			characterResponseList.add(new CharacterResponse(character));
+		});
+		
+		return characterResponseList;
+	}
+
+
 	@PostMapping("create")
 	public CharacterResponse createCharacter(@Valid @RequestBody CreateCharacterRequest createCharacterRequest) {
 		Character character = characterService.createCharacter(createCharacterRequest);
@@ -55,5 +69,4 @@ public class CharacterController {
 	public String deleteCharacter(@PathVariable Long id) {
 		return characterService.deleteCharacter(id);
 	}
-	
 }
