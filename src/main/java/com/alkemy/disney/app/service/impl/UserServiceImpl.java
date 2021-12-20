@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
 	public UserDto getUser(String username) {
 		UserEntity userEntity = userRepository.findByUsername(username);
 		
-		if(userEntity == null) throw new UsernameNotFoundException(username);
+		if(userEntity == null) throw new UsernameNotFoundException("User with username:" + username + " not found");
 		
 		UserDto returnValue = new UserDto();
 		BeanUtils.copyProperties(userEntity, returnValue);
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
 	public UserDto getUserByUserId(String id) {
 		UserEntity userEntity = userRepository.findByUserId(id);
 		
-		if(userEntity == null) throw new UsernameNotFoundException(id);
+		if(userEntity == null) throw new UsernameNotFoundException("User with ID:" + id + " not found");
 		
 		UserDto returnValue = new UserDto();
 		BeanUtils.copyProperties(userEntity, returnValue);
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService{
 		UserDto returnValue = new UserDto();
 
 		UserEntity userEntity = userRepository.findByUserId(userId);
-		if(userEntity == null) throw new UsernameNotFoundException(userId);
+		if(userEntity == null) throw new UsernameNotFoundException("User with ID:" + userId + " not found");
 
 		if(!(user.getUsername() == null)) userEntity.setUsername(user.getUsername());
 		if(!(user.getPassword() == null)) userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -93,6 +93,14 @@ public class UserServiceImpl implements UserService{
 		BeanUtils.copyProperties(updatedUserDetails, returnValue);
 
 		return returnValue;
+	}
+
+	@Override
+	public void deleteUser(String userId) {
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		if(userEntity == null) throw new UsernameNotFoundException("User with ID:" + userId + " not found");
+
+		 userRepository.delete(userEntity);
 	}
 
 }
