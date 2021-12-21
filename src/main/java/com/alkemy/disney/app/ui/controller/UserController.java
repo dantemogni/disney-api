@@ -34,26 +34,7 @@ public class UserController {
 		
 		return returnValue;
 	}
-	
-	@PostMapping
-	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
 		
-		UserRest returnValue = new UserRest();
-		
-		if(userDetails.getUsername().isEmpty()
-				|| userDetails.getPassword().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
-		
-		
-		UserDto userDto = new UserDto();
-		BeanUtils.copyProperties(userDetails, userDto);
-		
-		// Devuelve el usuario creado como json
-		UserDto createdUser = userService.createUser(userDto);
-		BeanUtils.copyProperties(createdUser, returnValue);
-		
-		return returnValue;
-	}
-	
 	@PutMapping(path="/{id}")
 	public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
 		UserRest returnValue = new UserRest();
