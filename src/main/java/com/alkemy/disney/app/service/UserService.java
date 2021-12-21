@@ -1,5 +1,7 @@
 package com.alkemy.disney.app.service;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.alkemy.disney.app.shared.dto.UserDto;
@@ -10,4 +12,5 @@ public interface UserService extends UserDetailsService {
 	public void deleteUser(String userId);
 	public UserDto getUser(String username);
 	public UserDto getUserByUserId(String id);
+	public List<UserDto> getUsers(int page, int limit);
 }
