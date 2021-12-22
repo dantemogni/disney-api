@@ -1,7 +1,9 @@
 package com.alkemy.disney.app.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.alkemy.disney.app.exceptions.CharacterServiceException;
 import com.alkemy.disney.app.io.entity.CharacterEntity;
+import com.alkemy.disney.app.io.entity.MovieEntity;
 import com.alkemy.disney.app.io.repository.CharacterRepository;
+import com.alkemy.disney.app.io.repository.MovieRepository;
 import com.alkemy.disney.app.service.CharacterService;
 import com.alkemy.disney.app.shared.Utils;
 import com.alkemy.disney.app.shared.dto.CharacterDto;
@@ -23,6 +27,9 @@ public class CharacterServiceImpl implements CharacterService{
 	CharacterRepository characterRepository;
 	
 	@Autowired
+	MovieRepository movieRepository;
+	
+	@Autowired
 	Utils utils;
 	
 	@Override
@@ -31,6 +38,19 @@ public class CharacterServiceImpl implements CharacterService{
 		BeanUtils.copyProperties(character, characterEntity);
 		
 		characterEntity.setCharacterId(utils.generateUserId(30));
+		
+		if(!character.getLinkedMovies().isEmpty()) {
+			Set<MovieEntity> aux = new HashSet<MovieEntity>();
+			
+			for(MovieEntity movie : character.getLinkedMovies()) {	
+				MovieEntity movieToAdd = movieRepository.findByMovieId(movie.getMovieId());	
+				
+				if(movieToAdd != null) aux.add(movieToAdd);
+				
+				characterEntity.setLinkedMovies(aux);
+			}	
+		}
+		
 		
 		CharacterEntity storedCharacterDetails = characterRepository.save(characterEntity);
 		

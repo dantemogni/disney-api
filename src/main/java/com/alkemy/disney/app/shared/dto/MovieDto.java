@@ -1,6 +1,10 @@
 package com.alkemy.disney.app.shared.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.alkemy.disney.app.io.entity.CharacterEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +24,9 @@ public class MovieDto implements Serializable {
 	@Getter
 	@Setter
 	private int rating;
+	
+	@Getter
+	@Setter
+	private Set<CharacterEntity> characters = new HashSet<CharacterEntity>();
+
 }

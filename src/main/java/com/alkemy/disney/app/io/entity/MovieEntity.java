@@ -1,12 +1,15 @@
 package com.alkemy.disney.app.io.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,5 +44,10 @@ public class MovieEntity implements Serializable {
 	@Setter
 	@Column
 	private int rating;
+	
+	@Getter
+	@Setter
+	@ManyToMany(targetEntity = CharacterEntity.class, mappedBy = "linkedMovies")
+	private Set<CharacterEntity> characters = new HashSet<CharacterEntity>();
 	
 }

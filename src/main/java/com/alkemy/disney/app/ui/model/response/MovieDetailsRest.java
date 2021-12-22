@@ -1,4 +1,4 @@
-package com.alkemy.disney.app.ui.model.request;
+package com.alkemy.disney.app.ui.model.response;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,9 +10,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MovieDetailsRequestModel {
-	private String image, title;
+public class MovieDetailsRest {
+	private String movieId, image, title;
 	private int rating;
 	private Set<CharacterEntity> characters = new HashSet<CharacterEntity>();
-
 }
