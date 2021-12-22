@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alkemy.disney.app.exceptions.CharacterServiceException;
 import com.alkemy.disney.app.service.CharacterService;
 import com.alkemy.disney.app.shared.dto.CharacterDto;
-import com.alkemy.disney.app.shared.dto.UserDto;
 import com.alkemy.disney.app.ui.model.request.CharacterDetailsRequestModel;
 import com.alkemy.disney.app.ui.model.response.CharacterRest;
 import com.alkemy.disney.app.ui.model.response.ErrorMessages;
-import com.alkemy.disney.app.ui.model.response.UserRest;
 
 @RestController
 @RequestMapping("characters")
