@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,19 @@ public class CharactersController {
 		
 		CharacterDto createdCharacter = characterService.createCharacter(characterDto);
 		BeanUtils.copyProperties(createdCharacter, returnValue);
+		
+		return returnValue;
+	}
+	
+	@PutMapping(path="/{id}")
+	public CharacterRest updateCharacter(@PathVariable String id, @RequestBody CharacterDetailsRequestModel characterDetails) {
+		CharacterRest returnValue = new CharacterRest();
+
+		CharacterDto characterDto = new CharacterDto();
+		BeanUtils.copyProperties(characterDetails, characterDto);
+		
+		CharacterDto updatedCharacter = characterService.updateCharacter(id, characterDto);
+		BeanUtils.copyProperties(updatedCharacter, returnValue);
 		
 		return returnValue;
 	}

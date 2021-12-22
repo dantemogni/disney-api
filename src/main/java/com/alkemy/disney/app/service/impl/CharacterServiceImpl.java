@@ -54,4 +54,24 @@ public class CharacterServiceImpl implements CharacterService{
 		characterRepository.delete(characterEntity);		
 	}
 
+	@Override
+	public CharacterDto updateCharacter(String id, CharacterDto character) {
+		CharacterDto returnValue = new CharacterDto();
+
+		CharacterEntity characterEntity = characterRepository.findByCharacterId(id);
+		if(characterEntity == null) throw new CharacterServiceException("Character with ID:" + id + " not found");
+
+		if(!(character.getName() == null)) characterEntity.setName(character.getName());
+		if(!(character.getImage() == null)) characterEntity.setImage(character.getImage());
+		if(!(character.getStory() == null)) characterEntity.setStory(character.getStory());
+		if(!(character.getWeight() == 0)) characterEntity.setWeight(character.getWeight());
+		if(!(character.getAge() == 0)) characterEntity.setAge(character.getAge());
+
+		CharacterEntity updatedCharacterDetails = characterRepository.save(characterEntity);
+		
+		BeanUtils.copyProperties(updatedCharacterDetails, returnValue);
+
+		return returnValue;
+	}
+
 }
