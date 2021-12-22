@@ -2,6 +2,7 @@ package com.alkemy.disney.app.ui.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,5 +50,10 @@ public class MovieController {
 		BeanUtils.copyProperties(createdMovie, returnValue);
 		
 		return returnValue;
+	}
+	
+	@DeleteMapping(path="/{id}")
+	public void deleteMovie(@PathVariable String id) {		
+		movieService.deleteMovie(id);
 	}
 }

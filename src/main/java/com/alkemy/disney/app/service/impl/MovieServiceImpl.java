@@ -45,4 +45,12 @@ public class MovieServiceImpl implements MovieService {
 		
 		return returnValue;
 	}
+
+	@Override
+	public void deleteMovie(String movieId) {
+		MovieEntity movieEntity = movieRepository.findByMovieId(movieId);
+		if(movieEntity == null) throw new MovieServiceException("Movie with ID:" + movieId + " not found");
+
+		movieRepository.delete(movieEntity);		
+	}
 }
