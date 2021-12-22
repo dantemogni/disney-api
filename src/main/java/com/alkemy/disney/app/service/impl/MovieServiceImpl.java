@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.alkemy.disney.app.exceptions.MovieServiceException;
+import com.alkemy.disney.app.io.entity.GenreEntity;
 import com.alkemy.disney.app.io.entity.MovieEntity;
+import com.alkemy.disney.app.io.repository.GenreRepository;
 import com.alkemy.disney.app.io.repository.MovieRepository;
 import com.alkemy.disney.app.service.MovieService;
 import com.alkemy.disney.app.shared.Utils;
@@ -21,6 +23,9 @@ import com.alkemy.disney.app.shared.dto.MovieDto;
 public class MovieServiceImpl implements MovieService {
 	@Autowired
 	MovieRepository movieRepository;
+	
+	@Autowired
+	GenreRepository genreRespository;
 	
 	@Autowired
 	Utils utils;
@@ -43,6 +48,18 @@ public class MovieServiceImpl implements MovieService {
 		BeanUtils.copyProperties(movie, movieEntity);
 		
 		movieEntity.setMovieId(utils.generateUserId(30));
+		
+		if(!movie.getLinkedGenres().isEmpty()) {
+			List<GenreEntity> aux = new ArrayList<GenreEntity>();
+			
+			for(GenreEntity genre : movie.getLinkedGenres()) {	
+				GenreEntity genreToAdd = genreRespository.findByGenreId(genre.getGenreId());	
+				
+				if(genreToAdd != null) aux.add(genreToAdd);
+				
+				movieEntity.setLinkedGenres(aux);
+			}	
+		}
 		
 		MovieEntity storedMovieDetails = movieRepository.save(movieEntity);
 		

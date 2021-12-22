@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import com.alkemy.disney.app.io.entity.CharacterEntity;
+import com.alkemy.disney.app.io.entity.GenreEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,7 @@ public class MovieDetailsRest {
 	private LocalDate creationDate;
 	private int rating;
 	private Set<CharacterEntity> characters;
+	private Set<GenreEntity> linkedGenres;
+
+
 }

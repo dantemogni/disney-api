@@ -1,9 +1,7 @@
 package com.alkemy.disney.app.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +38,7 @@ public class CharacterServiceImpl implements CharacterService{
 		characterEntity.setCharacterId(utils.generateUserId(30));
 		
 		if(!character.getLinkedMovies().isEmpty()) {
-			Set<MovieEntity> aux = new HashSet<MovieEntity>();
+			List<MovieEntity> aux = new ArrayList<MovieEntity>();
 			
 			for(MovieEntity movie : character.getLinkedMovies()) {	
 				MovieEntity movieToAdd = movieRepository.findByMovieId(movie.getMovieId());	
@@ -50,7 +48,6 @@ public class CharacterServiceImpl implements CharacterService{
 				characterEntity.setLinkedMovies(aux);
 			}	
 		}
-		
 		
 		CharacterEntity storedCharacterDetails = characterRepository.save(characterEntity);
 		

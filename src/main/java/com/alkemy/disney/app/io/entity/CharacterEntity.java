@@ -1,8 +1,8 @@
 package com.alkemy.disney.app.io.entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -72,14 +72,14 @@ public class CharacterEntity implements Serializable {
             CascadeType.PERSIST,
             CascadeType.MERGE
             })
-	private Set<MovieEntity> linkedMovies = new HashSet<MovieEntity>();
+	private List<MovieEntity> linkedMovies = new ArrayList<MovieEntity>();
 
 	@JsonManagedReference
-	public Set<MovieEntity> getLinkedMovies() {
+	public List<MovieEntity> getLinkedMovies() {
 		return linkedMovies;
 	}
 
-	public void setLinkedMovies(Set<MovieEntity> linkedMovies) {
+	public void setLinkedMovies(List<MovieEntity> linkedMovies) {
 		this.linkedMovies = linkedMovies;
 	}
 	

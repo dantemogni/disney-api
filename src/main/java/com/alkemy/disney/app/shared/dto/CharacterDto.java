@@ -1,14 +1,16 @@
 package com.alkemy.disney.app.shared.dto;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.alkemy.disney.app.io.entity.MovieEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 public class CharacterDto implements Serializable{
 
 	private static final long serialVersionUID = 9087319657624196186L;
@@ -31,6 +33,6 @@ public class CharacterDto implements Serializable{
 	
 	@Getter
 	@Setter
-	private Set<MovieEntity> linkedMovies = new HashSet<MovieEntity>();
+	private List<MovieEntity> linkedMovies = new ArrayList<MovieEntity>();
 
 }
