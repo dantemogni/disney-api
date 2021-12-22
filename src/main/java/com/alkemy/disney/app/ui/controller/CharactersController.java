@@ -1,5 +1,8 @@
 package com.alkemy.disney.app.ui.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,14 +12,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.disney.app.exceptions.CharacterServiceException;
 import com.alkemy.disney.app.service.CharacterService;
 import com.alkemy.disney.app.shared.dto.CharacterDto;
+import com.alkemy.disney.app.shared.dto.UserDto;
 import com.alkemy.disney.app.ui.model.request.CharacterDetailsRequestModel;
 import com.alkemy.disney.app.ui.model.response.CharacterRest;
 import com.alkemy.disney.app.ui.model.response.ErrorMessages;
+import com.alkemy.disney.app.ui.model.response.UserRest;
 
 @RestController
 @RequestMapping("characters")
@@ -33,6 +39,23 @@ public class CharactersController {
 		BeanUtils.copyProperties(characterDto, returnValue);
 		
 		return returnValue;
+	}
+	
+	@GetMapping
+	public List<CharacterRest> getCharacters(@RequestParam(value="page", defaultValue="0") int page,
+								   @RequestParam(value="limit", defaultValue="25") int limit) {
+		List<CharacterRest> returnValue = new ArrayList<>();
+		
+		List<CharacterDto> characters = characterService.getCharacters(page, limit);
+		
+		for(CharacterDto characterDto : characters) {
+			CharacterRest characterModel = new CharacterRest();
+			BeanUtils.copyProperties(characterDto, characterModel);
+			returnValue.add(characterModel);
+		}
+		
+		return returnValue;
+		
 	}
 	
 	@PostMapping

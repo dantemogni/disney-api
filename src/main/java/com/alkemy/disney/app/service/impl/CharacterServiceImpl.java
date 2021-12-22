@@ -1,7 +1,13 @@
 package com.alkemy.disney.app.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.alkemy.disney.app.exceptions.CharacterServiceException;
@@ -73,5 +79,21 @@ public class CharacterServiceImpl implements CharacterService{
 
 		return returnValue;
 	}
-
+	@Override
+	public List<CharacterDto> getCharacters(int page, int limit) {
+		List<CharacterDto> returnValue = new ArrayList<>();
+		
+		Pageable pageableRequest = PageRequest.of(page, limit);
+		
+		Page<CharacterEntity> charactersPage = characterRepository.findAll(pageableRequest);
+		List<CharacterEntity> characters = charactersPage.getContent();
+		
+		for(CharacterEntity characterEntity : characters) {
+			CharacterDto characterDto = new CharacterDto();
+			BeanUtils.copyProperties(characterEntity, characterDto);
+			returnValue.add(characterDto);
+		}
+		
+		return returnValue;
+	}
 }
