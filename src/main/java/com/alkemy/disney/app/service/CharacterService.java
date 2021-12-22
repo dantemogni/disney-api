@@ -4,6 +4,6 @@ import com.alkemy.disney.app.shared.dto.CharacterDto;
 
 public interface CharacterService {
 	public CharacterDto getCharacterById(String id) throws Exception;
-
+	public void deleteCharacter(String characterId);
 	public CharacterDto createCharacter(CharacterDto character);
 }

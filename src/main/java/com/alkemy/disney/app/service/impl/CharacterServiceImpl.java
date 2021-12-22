@@ -4,6 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alkemy.disney.app.exceptions.CharacterServiceException;
 import com.alkemy.disney.app.io.entity.CharacterEntity;
 import com.alkemy.disney.app.io.repository.CharacterRepository;
 import com.alkemy.disney.app.service.CharacterService;
@@ -34,15 +35,23 @@ public class CharacterServiceImpl implements CharacterService{
 	}
 
 	@Override
-	public CharacterDto getCharacterById(String id) throws Exception {
+	public CharacterDto getCharacterById(String id) {
 		CharacterEntity characterEntity = characterRepository.findByCharacterId(id);
 		
-		if(characterEntity == null) throw new Exception("Character not found");
+		if(characterEntity == null) throw new CharacterServiceException("Character not found");
 		
 		CharacterDto returnValue = new CharacterDto();
 		BeanUtils.copyProperties(characterEntity, returnValue);
 		
 		return returnValue;
+	}
+
+	@Override
+	public void deleteCharacter(String characterId) {
+		CharacterEntity characterEntity = characterRepository.findByCharacterId(characterId);
+		if(characterEntity == null) throw new CharacterServiceException("Character with ID:" + characterId + " not found");
+
+		characterRepository.delete(characterEntity);		
 	}
 
 }
