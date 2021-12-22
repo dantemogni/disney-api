@@ -29,7 +29,7 @@ public class MovieEntity implements Serializable {
 	
 	@Getter
 	@Setter
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false)
 	private String image;
 	
 	@Getter
