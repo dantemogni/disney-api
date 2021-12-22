@@ -1,6 +1,5 @@
 package com.alkemy.disney.app.ui.model.response;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.alkemy.disney.app.io.entity.MovieEntity;
@@ -12,5 +11,5 @@ import lombok.Setter;
 @Setter
 public class CharacterDetailsRest {
 	private String characterId, image, name;
-	private Set<MovieEntity> linkedMovies = new HashSet<MovieEntity>();
+	private Set<MovieEntity> linkedMovies;
 }

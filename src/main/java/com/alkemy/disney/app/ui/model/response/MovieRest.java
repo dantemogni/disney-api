@@ -1,5 +1,7 @@
 package com.alkemy.disney.app.ui.model.response;
 
+import java.time.LocalDate;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,5 +9,5 @@ import lombok.Setter;
 @Setter
 public class MovieRest {
 	private String movieId, image, title;
-	private int rating;
+	private LocalDate creationDate;
 }

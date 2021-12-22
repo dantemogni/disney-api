@@ -1,6 +1,7 @@
 package com.alkemy.disney.app.io.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +12,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name = "movies")
+@JsonIgnoreProperties("id")
 public class MovieEntity implements Serializable {
 
 	private static final long serialVersionUID = -3789037636323586802L;
@@ -47,7 +52,20 @@ public class MovieEntity implements Serializable {
 	
 	@Getter
 	@Setter
+	@Column(nullable = false)
+	private LocalDate creationDate;
+	
+
 	@ManyToMany(targetEntity = CharacterEntity.class, mappedBy = "linkedMovies")
 	private Set<CharacterEntity> characters = new HashSet<CharacterEntity>();
+
+	@JsonBackReference
+	public Set<CharacterEntity> getCharacters() {
+		return characters;
+	}
+
+	public void setCharacters(Set<CharacterEntity> characters) {
+		this.characters = characters;
+	}
 	
 }

@@ -20,6 +20,7 @@ import com.alkemy.disney.app.service.MovieService;
 import com.alkemy.disney.app.shared.dto.MovieDto;
 import com.alkemy.disney.app.ui.model.request.MovieDetailsRequestModel;
 import com.alkemy.disney.app.ui.model.response.ErrorMessages;
+import com.alkemy.disney.app.ui.model.response.MovieDetailsRest;
 import com.alkemy.disney.app.ui.model.response.MovieRest;
 
 @RestController
@@ -32,6 +33,16 @@ public class MovieController {
 	@GetMapping(path="/{id}")
 	public MovieRest getMovie(@PathVariable String id) throws Exception {
 		MovieRest returnValue = new MovieRest();
+		
+		MovieDto movieDto = movieService.getMovieById(id);
+		BeanUtils.copyProperties(movieDto, returnValue);
+		
+		return returnValue;
+	}
+	
+	@GetMapping(path="/details/{id}")
+	public MovieDetailsRest getMovieDetails(@PathVariable String id) throws Exception {
+		MovieDetailsRest returnValue = new MovieDetailsRest();
 		
 		MovieDto movieDto = movieService.getMovieById(id);
 		BeanUtils.copyProperties(movieDto, returnValue);

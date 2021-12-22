@@ -14,10 +14,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name = "characters")
+@JsonIgnoreProperties("id")
 public class CharacterEntity implements Serializable {
 
 	private static final long serialVersionUID = -727357667470251549L;
@@ -58,8 +62,6 @@ public class CharacterEntity implements Serializable {
 	@Column(nullable = false)
 	private String story;
 	
-	@Getter
-	@Setter
 	@JoinTable(
 			name = "movie_has_character", 
 			joinColumns = @JoinColumn(name = "character_id", nullable = false),
@@ -71,4 +73,15 @@ public class CharacterEntity implements Serializable {
             CascadeType.MERGE
             })
 	private Set<MovieEntity> linkedMovies = new HashSet<MovieEntity>();
+
+	@JsonManagedReference
+	public Set<MovieEntity> getLinkedMovies() {
+		return linkedMovies;
+	}
+
+	public void setLinkedMovies(Set<MovieEntity> linkedMovies) {
+		this.linkedMovies = linkedMovies;
+	}
+	
+	
 }

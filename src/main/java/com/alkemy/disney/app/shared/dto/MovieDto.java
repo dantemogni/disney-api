@@ -1,6 +1,7 @@
 package com.alkemy.disney.app.shared.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,10 @@ public class MovieDto implements Serializable {
 	@Getter
 	@Setter
 	private int rating;
+	
+	@Getter
+	@Setter
+	private LocalDate creationDate;
 	
 	@Getter
 	@Setter

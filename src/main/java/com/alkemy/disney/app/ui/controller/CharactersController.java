@@ -19,6 +19,7 @@ import com.alkemy.disney.app.exceptions.CharacterServiceException;
 import com.alkemy.disney.app.service.CharacterService;
 import com.alkemy.disney.app.shared.dto.CharacterDto;
 import com.alkemy.disney.app.ui.model.request.CharacterDetailsRequestModel;
+import com.alkemy.disney.app.ui.model.response.CharacterDetailsRest;
 import com.alkemy.disney.app.ui.model.response.CharacterRest;
 import com.alkemy.disney.app.ui.model.response.ErrorMessages;
 
@@ -32,6 +33,16 @@ public class CharactersController {
 	@GetMapping(path="/{id}")
 	public CharacterRest getCharacter(@PathVariable String id) throws Exception {
 		CharacterRest returnValue = new CharacterRest();
+		
+		CharacterDto characterDto = characterService.getCharacterById(id);
+		BeanUtils.copyProperties(characterDto, returnValue);
+		
+		return returnValue;
+	}
+	
+	@GetMapping(path="/details/{id}")
+	public CharacterDetailsRest getCharacterDetails(@PathVariable String id) throws Exception {
+		CharacterDetailsRest returnValue = new CharacterDetailsRest();
 		
 		CharacterDto characterDto = characterService.getCharacterById(id);
 		BeanUtils.copyProperties(characterDto, returnValue);
