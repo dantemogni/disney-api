@@ -13,6 +13,8 @@
 
 🔧 NOTE: The endpoint `/auth/login` is available to use, but it isn't portrayed in the Swagger docs.
 
+---
+
 Not implemented:
 - Welcome email
 - Tests
