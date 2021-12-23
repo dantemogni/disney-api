@@ -105,7 +105,6 @@ public class CharacterServiceImpl implements CharacterService{
 		List<CharacterDto> returnValue = new ArrayList<>();
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
-		Page<CharacterEntity> charactersPage;
 		
 		List<CharacterEntity> characters = new ArrayList<>();
 		
@@ -126,7 +125,7 @@ public class CharacterServiceImpl implements CharacterService{
 				.and(new CharacterWithAge(age))
 				.and(new CharacterWithMovie(movieDto));
 
- 		charactersPage = characterRepository.findAll(spec, pageableRequest);
+		Page<CharacterEntity> charactersPage = characterRepository.findAll(spec, pageableRequest);
 		characters = charactersPage.getContent();
 		
 		for(CharacterEntity characterEntity : characters) {

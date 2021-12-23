@@ -54,11 +54,14 @@ public class MovieController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<MovieRest>> getMovies(@RequestParam(value="page", defaultValue="0") int page,
-								   @RequestParam(value="limit", defaultValue="25") int limit) {
+	public ResponseEntity<List<MovieRest>> getMovies(
+								@RequestParam(value="name",  required = false) String name,
+								@RequestParam(value="genre",  required = false) String genreId,
+								@RequestParam(value="page", defaultValue="0") int page,
+								@RequestParam(value="limit", defaultValue="25") int limit) {
 		List<MovieRest> returnValue = new ArrayList<>();
 		
-		List<MovieDto> movies = movieService.getMovies(page, limit);
+		List<MovieDto> movies = movieService.getMovies(name, genreId, page, limit);
 		
 		for(MovieDto movieDto : movies) {
 			MovieRest movieModel = new MovieRest();

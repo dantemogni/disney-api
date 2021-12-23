@@ -9,6 +9,6 @@ public interface MovieService {
 	public MovieDto createMovie(MovieDto movie);
 	public void deleteMovie(String movieId);
 	public MovieDto updateMovie(String id, MovieDto movie);
-	public List<MovieDto> getMovies(int page, int limit);
+	public List<MovieDto> getMovies(String name, String genreId, int page, int limit);
 
 }

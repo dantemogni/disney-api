@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.alkemy.disney.app.exceptions.GenreServiceException;
 import com.alkemy.disney.app.exceptions.MovieServiceException;
 import com.alkemy.disney.app.io.entity.GenreEntity;
 import com.alkemy.disney.app.io.entity.MovieEntity;
@@ -18,7 +20,10 @@ import com.alkemy.disney.app.io.repository.GenreRepository;
 import com.alkemy.disney.app.io.repository.MovieRepository;
 import com.alkemy.disney.app.service.MovieService;
 import com.alkemy.disney.app.shared.Utils;
+import com.alkemy.disney.app.shared.dto.GenreDto;
 import com.alkemy.disney.app.shared.dto.MovieDto;
+import com.alkemy.disney.app.shared.spec.movie.MovieWithGenre;
+import com.alkemy.disney.app.shared.spec.movie.MovieWithName;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -95,12 +100,29 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<MovieDto> getMovies(int page, int limit) {
+	public List<MovieDto> getMovies(String name, String genreId, int page, int limit) {
 		List<MovieDto> returnValue = new ArrayList<>();
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
 		
-		Page<MovieEntity> moviesPage = movieRepository.findAll(pageableRequest);
+		// Trae el genero del query
+		GenreDto genreDto = new GenreDto();
+		if(genreId != null) {
+			GenreEntity genreInMovie = genreRespository.findByGenreId(genreId);
+			
+			//TODO: Manejar la excepcion
+			if(genreInMovie == null) throw new GenreServiceException("Could not find genre");
+			
+			BeanUtils.copyProperties(genreInMovie, genreDto);
+		}
+		
+		// Hace el filtrado de queries
+		Specification<MovieEntity> spec = Specification
+						.where(new MovieWithName(name))
+						.and(new MovieWithGenre(genreDto));
+		
+		
+		Page<MovieEntity> moviesPage = movieRepository.findAll(spec, pageableRequest);
 		List<MovieEntity> movies = moviesPage.getContent();
 		
 		for(MovieEntity movieEntity : movies) {
