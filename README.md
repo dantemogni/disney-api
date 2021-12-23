@@ -12,3 +12,7 @@
 👉 You can see the challenge here: https://drive.google.com/file/d/1x0ogARF_Szza6wXIzIljt2PYXZ5bIG_4/view
 
 🔧 NOTE: The endpoint `/auth/login` is available to use, but it isn't portrayed in the Swagger docs.
+
+Not implemented:
+- Welcome email
+- Tests
