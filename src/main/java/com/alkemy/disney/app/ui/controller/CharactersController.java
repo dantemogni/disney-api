@@ -27,6 +27,9 @@ import com.alkemy.disney.app.ui.model.response.CharacterDetailsRest;
 import com.alkemy.disney.app.ui.model.response.CharacterRest;
 import com.alkemy.disney.app.ui.model.response.ErrorMessages;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+
 @RestController
 @RequestMapping("characters")
 public class CharactersController {
@@ -37,6 +40,9 @@ public class CharactersController {
 	@Autowired
 	MovieService movieService;
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping(path="/{id}")
 	public ResponseEntity<CharacterRest> getCharacter(@PathVariable String id) throws Exception {
 		CharacterRest returnValue = new CharacterRest();
@@ -47,6 +53,9 @@ public class CharactersController {
 		return new ResponseEntity<CharacterRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping(path="/details/{id}")
 	public ResponseEntity<CharacterDetailsRest> getCharacterDetails(@PathVariable String id) throws Exception {
 		CharacterDetailsRest returnValue = new CharacterDetailsRest();
@@ -57,6 +66,9 @@ public class CharactersController {
 		return new ResponseEntity<CharacterDetailsRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping
 	public ResponseEntity<List<CharacterRest>> getCharacters(
 									@RequestParam(value = "name", required = false) String name,
@@ -78,10 +90,10 @@ public class CharactersController {
 		return new ResponseEntity<List<CharacterRest>>(returnValue, HttpStatus.OK);
 		
 	}
-
-	//@GetMapping
-	//public List<CharacterRest>
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@PostMapping
 	public ResponseEntity<CharacterRest> createCharacter(@RequestBody CharacterDetailsRequestModel characterDetails) {
 		CharacterRest returnValue = new CharacterRest();
@@ -103,6 +115,9 @@ public class CharactersController {
 		return new ResponseEntity<CharacterRest>(returnValue, HttpStatus.CREATED);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@PutMapping(path="/{id}")
 	public ResponseEntity<CharacterRest> updateCharacter(@PathVariable String id, @RequestBody CharacterDetailsRequestModel characterDetails) {
 		CharacterRest returnValue = new CharacterRest();
@@ -116,6 +131,9 @@ public class CharactersController {
 		return new ResponseEntity<CharacterRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@DeleteMapping(path="/{id}")
 	public ResponseEntity<Void> deleteCharacter(@PathVariable String id) {		
 		characterService.deleteCharacter(id);

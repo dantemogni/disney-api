@@ -21,13 +21,19 @@ import com.alkemy.disney.app.shared.dto.UserDto;
 import com.alkemy.disney.app.ui.model.request.UserDetailsRequestModel;
 import com.alkemy.disney.app.ui.model.response.UserRest;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
 	
 	@Autowired
 	UserService userService;
-
+	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping(path="/{id}")
 	public ResponseEntity<UserRest> getUser(@PathVariable String id) {
 		UserRest returnValue = new UserRest();
@@ -38,6 +44,9 @@ public class UserController {
 		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping
 	public ResponseEntity<List<UserRest>> getUsers(@RequestParam(value="page", defaultValue="0") int page,
 								   @RequestParam(value="limit", defaultValue="25") int limit) {
@@ -68,6 +77,9 @@ public class UserController {
 		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@DeleteMapping(path="/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable String id) {		
 		userService.deleteUser(id);

@@ -24,6 +24,9 @@ import com.alkemy.disney.app.ui.model.request.GenreDetailsRequestModel;
 import com.alkemy.disney.app.ui.model.response.ErrorMessages;
 import com.alkemy.disney.app.ui.model.response.GenreRest;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+
 @RestController
 @RequestMapping("genres")
 public class GenreController {
@@ -31,6 +34,9 @@ public class GenreController {
 	@Autowired
 	GenreService genreService;
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping(path="/{id}")
 	public ResponseEntity<GenreRest> getGenre(@PathVariable String id) throws Exception {
 		GenreRest returnValue = new GenreRest();
@@ -41,6 +47,9 @@ public class GenreController {
 		return new ResponseEntity<GenreRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping
 	public ResponseEntity<List<GenreRest>> getGenres(@RequestParam(value="page", defaultValue="0") int page,
 								   @RequestParam(value="limit", defaultValue="25") int limit) {
@@ -58,6 +67,9 @@ public class GenreController {
 		
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@PostMapping
 	public ResponseEntity<GenreRest> createGenre(@RequestBody GenreDetailsRequestModel genreDetails) {
 		GenreRest returnValue = new GenreRest();
@@ -76,6 +88,9 @@ public class GenreController {
 		return new ResponseEntity<GenreRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@PutMapping(path="/{id}")
 	public ResponseEntity<GenreRest> updateGenre(@PathVariable String id, @RequestBody GenreDetailsRequestModel genreDetails) {
 		GenreRest returnValue = new GenreRest();
@@ -89,6 +104,9 @@ public class GenreController {
 		return new ResponseEntity<GenreRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@DeleteMapping(path="/{id}")
 	public ResponseEntity<Void> deleteGenre(@PathVariable String id) {		
 		genreService.deleteGenre(id);

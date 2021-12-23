@@ -9,7 +9,7 @@
 		<version>2.6.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.alkemy</groupId>
+	<groupId>com.alkemy.disney.app</groupId>
 	<artifactId>challenge-disney</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>challenge-disney</name>
@@ -76,6 +76,13 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.4.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
 
 	</dependencies>
 

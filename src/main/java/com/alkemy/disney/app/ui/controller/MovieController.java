@@ -26,6 +26,9 @@ import com.alkemy.disney.app.ui.model.response.ErrorMessages;
 import com.alkemy.disney.app.ui.model.response.MovieDetailsRest;
 import com.alkemy.disney.app.ui.model.response.MovieRest;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+
 @RestController
 @RequestMapping("movies")
 public class MovieController {
@@ -33,6 +36,9 @@ public class MovieController {
 	@Autowired
 	MovieService movieService;
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping(path="/{id}")
 	public ResponseEntity<MovieRest> getMovie(@PathVariable String id) throws Exception {
 		MovieRest returnValue = new MovieRest();
@@ -43,6 +49,9 @@ public class MovieController {
 		return new ResponseEntity<MovieRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping(path="/details/{id}")
 	public ResponseEntity<MovieDetailsRest> getMovieDetails(@PathVariable String id) throws Exception {
 		MovieDetailsRest returnValue = new MovieDetailsRest();
@@ -53,6 +62,9 @@ public class MovieController {
 		return new ResponseEntity<MovieDetailsRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@GetMapping
 	public ResponseEntity<List<MovieRest>> getMovies(
 								@RequestParam(value="name",  required = false) String name,
@@ -74,6 +86,9 @@ public class MovieController {
 		
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@PostMapping
 	public ResponseEntity<MovieRest> createMovie(@RequestBody MovieDetailsRequestModel movieDetails) {
 		MovieRest returnValue = new MovieRest();
@@ -92,6 +107,9 @@ public class MovieController {
 		return new ResponseEntity<MovieRest>(returnValue, HttpStatus.CREATED);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@PutMapping(path="/{id}")
 	public ResponseEntity<MovieRest> updateMovie(@PathVariable String id, @RequestBody MovieDetailsRequestModel movieDetails) {
 		MovieRest returnValue = new MovieRest();
@@ -105,6 +123,9 @@ public class MovieController {
 		return new ResponseEntity<MovieRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="authorization", value="Bearer JWT Token", paramType="header")
+	})
 	@DeleteMapping(path="/{id}")
 	public ResponseEntity<Void> deleteMovie(@PathVariable String id) {		
 		movieService.deleteMovie(id);		
