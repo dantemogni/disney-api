@@ -9,4 +9,5 @@ import com.alkemy.disney.app.io.entity.MovieEntity;
 @Repository
 public interface MovieRepository extends PagingAndSortingRepository<MovieEntity, Long>, JpaSpecificationExecutor<MovieEntity> {
 	MovieEntity findByMovieId(String id);
+	//List<MovieEntity> findAllByOrderByCreationDateAsc();
 }
