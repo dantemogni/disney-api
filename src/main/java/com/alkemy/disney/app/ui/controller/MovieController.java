@@ -3,6 +3,7 @@ package com.alkemy.disney.app.ui.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,11 +77,11 @@ public class MovieController {
 			throw new MovieServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		}
 		
-		MovieDto movieDto = new MovieDto();
-		BeanUtils.copyProperties(movieDetails, movieDto);
+		ModelMapper modelMapper = new ModelMapper();
+		MovieDto movieDto = modelMapper.map(movieDetails, MovieDto.class);
 		
 		MovieDto createdMovie = movieService.createMovie(movieDto);
-		BeanUtils.copyProperties(createdMovie, returnValue);
+		returnValue = modelMapper.map(createdMovie, MovieRest.class);
 		
 		return returnValue;
 	}

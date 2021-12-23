@@ -15,16 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name = "movies")
-@JsonIgnoreProperties("id")
+@JsonIgnoreProperties({"id", "characters"})
 public class MovieEntity implements Serializable {
 
 	private static final long serialVersionUID = -3789037636323586802L;
@@ -77,7 +75,6 @@ public class MovieEntity implements Serializable {
             })
 	private List<GenreEntity> linkedGenres = new ArrayList<GenreEntity>();
 	
-	@JsonBackReference
 	public List<CharacterEntity> getCharacters() {
 		return characters;
 	}
@@ -86,7 +83,6 @@ public class MovieEntity implements Serializable {
 		this.characters = characters;
 	}
 	
-	@JsonManagedReference
 	public List<GenreEntity> getLinkedGenres() {
 		return linkedGenres;
 	}

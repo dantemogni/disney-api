@@ -15,7 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -62,6 +61,7 @@ public class CharacterEntity implements Serializable {
 	@Column(nullable = false)
 	private String story;
 	
+	@JsonIgnoreProperties("characters")
 	@JoinTable(
 			name = "movie_has_character", 
 			joinColumns = @JoinColumn(name = "character_id", nullable = false),
@@ -74,7 +74,6 @@ public class CharacterEntity implements Serializable {
             })
 	private List<MovieEntity> linkedMovies = new ArrayList<MovieEntity>();
 
-	@JsonManagedReference
 	public List<MovieEntity> getLinkedMovies() {
 		return linkedMovies;
 	}

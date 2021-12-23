@@ -11,11 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@JsonIgnoreProperties({"id", "movies"})
 @Entity(name = "genres")
 public class GenreEntity implements Serializable {
 
@@ -45,7 +46,6 @@ public class GenreEntity implements Serializable {
 	@ManyToMany(targetEntity = MovieEntity.class, mappedBy = "linkedGenres")
 	private List<MovieEntity> movies = new ArrayList<MovieEntity>();
 
-	@JsonBackReference
 	public List<MovieEntity> getMovies() {
 		return movies;
 	}

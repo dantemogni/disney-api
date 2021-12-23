@@ -3,6 +3,7 @@ package com.alkemy.disney.app.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,8 +45,8 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public MovieDto createMovie(MovieDto movie) {
-		MovieEntity movieEntity = new MovieEntity();
-		BeanUtils.copyProperties(movie, movieEntity);
+		ModelMapper modelMapper = new ModelMapper();
+		MovieEntity movieEntity = modelMapper.map(movie, MovieEntity.class);
 		
 		movieEntity.setMovieId(utils.generateUserId(30));
 		
@@ -62,9 +63,7 @@ public class MovieServiceImpl implements MovieService {
 		}
 		
 		MovieEntity storedMovieDetails = movieRepository.save(movieEntity);
-		
-		MovieDto returnValue = new MovieDto();
-		BeanUtils.copyProperties(storedMovieDetails, returnValue);
+		MovieDto returnValue = modelMapper.map(storedMovieDetails, MovieDto.class);
 		
 		return returnValue;
 	}

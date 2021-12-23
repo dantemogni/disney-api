@@ -3,6 +3,7 @@ package com.alkemy.disney.app.ui.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +37,7 @@ public class CharactersController {
 		
 		CharacterDto characterDto = characterService.getCharacterById(id);
 		BeanUtils.copyProperties(characterDto, returnValue);
-		
+			
 		return returnValue;
 	}
 	
@@ -79,11 +80,11 @@ public class CharactersController {
 			throw new CharacterServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		}
 		
-		CharacterDto characterDto = new CharacterDto();
-		BeanUtils.copyProperties(characterDetails, characterDto);
+		ModelMapper modelMapper = new ModelMapper();
+		CharacterDto characterDto = modelMapper.map(characterDetails, CharacterDto.class);
 		
 		CharacterDto createdCharacter = characterService.createCharacter(characterDto);
-		BeanUtils.copyProperties(createdCharacter, returnValue);
+		returnValue = modelMapper.map(createdCharacter, CharacterRest.class);
 		
 		return returnValue;
 	}

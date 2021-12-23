@@ -3,6 +3,7 @@ package com.alkemy.disney.app.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,9 +33,9 @@ public class CharacterServiceImpl implements CharacterService{
 	
 	@Override
 	public CharacterDto createCharacter(CharacterDto character) {
-		CharacterEntity characterEntity = new CharacterEntity();
-		BeanUtils.copyProperties(character, characterEntity);
-		
+		ModelMapper modelMapper = new ModelMapper();
+		CharacterEntity characterEntity = modelMapper.map(character, CharacterEntity.class);
+				
 		characterEntity.setCharacterId(utils.generateUserId(30));
 		
 		if(!character.getLinkedMovies().isEmpty()) {
@@ -50,9 +51,7 @@ public class CharacterServiceImpl implements CharacterService{
 		}
 		
 		CharacterEntity storedCharacterDetails = characterRepository.save(characterEntity);
-		
-		CharacterDto returnValue = new CharacterDto();
-		BeanUtils.copyProperties(storedCharacterDetails, returnValue);
+		CharacterDto returnValue = modelMapper.map(storedCharacterDetails, CharacterDto.class);
 		
 		return returnValue;
 	}
