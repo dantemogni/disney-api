@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,17 +29,17 @@ public class UserController {
 	UserService userService;
 
 	@GetMapping(path="/{id}")
-	public UserRest getUser(@PathVariable String id) {
+	public ResponseEntity<UserRest> getUser(@PathVariable String id) {
 		UserRest returnValue = new UserRest();
 
 		UserDto userDto = userService.getUserByUserId(id);
 		BeanUtils.copyProperties(userDto, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@GetMapping
-	public List<UserRest> getUsers(@RequestParam(value="page", defaultValue="0") int page,
+	public ResponseEntity<List<UserRest>> getUsers(@RequestParam(value="page", defaultValue="0") int page,
 								   @RequestParam(value="limit", defaultValue="25") int limit) {
 		List<UserRest> returnValue = new ArrayList<>();
 		
@@ -49,12 +51,12 @@ public class UserController {
 			returnValue.add(userModel);
 		}
 		
-		return returnValue;
+		return new ResponseEntity<List<UserRest>>(returnValue, HttpStatus.OK);
 		
 	}
 	
 	@PutMapping(path="/{id}")
-	public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
+	public ResponseEntity<UserRest> updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
 		UserRest returnValue = new UserRest();
 
 		UserDto userDto = new UserDto();
@@ -63,11 +65,12 @@ public class UserController {
 		UserDto updatedUser = userService.updateUser(id, userDto);
 		BeanUtils.copyProperties(updatedUser, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path="/{id}")
-	public void deleteUser(@PathVariable String id) {		
+	public ResponseEntity<Void> deleteUser(@PathVariable String id) {		
 		userService.deleteUser(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

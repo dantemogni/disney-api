@@ -6,6 +6,8 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,31 +34,36 @@ public class CharactersController {
 	CharacterService characterService;
 	
 	@GetMapping(path="/{id}")
-	public CharacterRest getCharacter(@PathVariable String id) throws Exception {
+	public ResponseEntity<CharacterRest> getCharacter(@PathVariable String id) throws Exception {
 		CharacterRest returnValue = new CharacterRest();
 		
 		CharacterDto characterDto = characterService.getCharacterById(id);
 		BeanUtils.copyProperties(characterDto, returnValue);
 			
-		return returnValue;
+		return new ResponseEntity<CharacterRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/details/{id}")
-	public CharacterDetailsRest getCharacterDetails(@PathVariable String id) throws Exception {
+	public ResponseEntity<CharacterDetailsRest> getCharacterDetails(@PathVariable String id) throws Exception {
 		CharacterDetailsRest returnValue = new CharacterDetailsRest();
 		
 		CharacterDto characterDto = characterService.getCharacterById(id);
 		BeanUtils.copyProperties(characterDto, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<CharacterDetailsRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@GetMapping
-	public List<CharacterRest> getCharacters(@RequestParam(value="page", defaultValue="0") int page,
-								   @RequestParam(value="limit", defaultValue="25") int limit) {
+	public ResponseEntity<List<CharacterRest>> getCharacters(
+									@RequestParam(value = "name", required = false) String name,
+									@RequestParam(value = "age", required = false) Integer age,
+									@RequestParam(value = "movies", required = false) String movieId,
+									@RequestParam(value="page", defaultValue="0") int page,
+									@RequestParam(value="limit", defaultValue="25") int limit) {
+		
 		List<CharacterRest> returnValue = new ArrayList<>();
 		
-		List<CharacterDto> characters = characterService.getCharacters(page, limit);
+		List<CharacterDto> characters = characterService.getCharacters(name, age, movieId, page, limit);
 		
 		for(CharacterDto characterDto : characters) {
 			CharacterRest characterModel = new CharacterRest();
@@ -64,12 +71,15 @@ public class CharactersController {
 			returnValue.add(characterModel);
 		}
 		
-		return returnValue;
+		return new ResponseEntity<List<CharacterRest>>(returnValue, HttpStatus.OK);
 		
 	}
+
+	//@GetMapping
+	//public List<CharacterRest>
 	
 	@PostMapping
-	public CharacterRest createCharacter(@RequestBody CharacterDetailsRequestModel characterDetails) {
+	public ResponseEntity<CharacterRest> createCharacter(@RequestBody CharacterDetailsRequestModel characterDetails) {
 		CharacterRest returnValue = new CharacterRest();
 		
 		if(characterDetails.getName().isEmpty()
@@ -86,11 +96,11 @@ public class CharactersController {
 		CharacterDto createdCharacter = characterService.createCharacter(characterDto);
 		returnValue = modelMapper.map(createdCharacter, CharacterRest.class);
 		
-		return returnValue;
+		return new ResponseEntity<CharacterRest>(returnValue, HttpStatus.CREATED);
 	}
 	
 	@PutMapping(path="/{id}")
-	public CharacterRest updateCharacter(@PathVariable String id, @RequestBody CharacterDetailsRequestModel characterDetails) {
+	public ResponseEntity<CharacterRest> updateCharacter(@PathVariable String id, @RequestBody CharacterDetailsRequestModel characterDetails) {
 		CharacterRest returnValue = new CharacterRest();
 
 		CharacterDto characterDto = new CharacterDto();
@@ -99,11 +109,12 @@ public class CharactersController {
 		CharacterDto updatedCharacter = characterService.updateCharacter(id, characterDto);
 		BeanUtils.copyProperties(updatedCharacter, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<CharacterRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path="/{id}")
-	public void deleteCharacter(@PathVariable String id) {		
+	public ResponseEntity<Void> deleteCharacter(@PathVariable String id) {		
 		characterService.deleteCharacter(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

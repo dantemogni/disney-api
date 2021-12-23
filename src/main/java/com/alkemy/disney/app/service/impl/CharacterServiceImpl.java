@@ -96,13 +96,29 @@ public class CharacterServiceImpl implements CharacterService{
 		return returnValue;
 	}
 	@Override
-	public List<CharacterDto> getCharacters(int page, int limit) {
+	public List<CharacterDto> getCharacters(String name, Integer age, String movieId, int page, int limit) {
 		List<CharacterDto> returnValue = new ArrayList<>();
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
 		
-		Page<CharacterEntity> charactersPage = characterRepository.findAll(pageableRequest);
-		List<CharacterEntity> characters = charactersPage.getContent();
+		Page<CharacterEntity> charactersPage;
+		
+		List<CharacterEntity> characters = new ArrayList<>();
+		
+		//if(name != null) {
+		//	characters.add(characterRepository.findByName(name, pageableRequest));
+		//}
+
+		//if(age != null) {
+		//	characters.add(characterRepository.findByAge(age, pageableRequest));
+		//}
+		
+		//if(movieId != null) {
+		//	aux.add(characterRepository.findByLinkedMovies(movieId));
+		//}
+
+		charactersPage = characterRepository.findAll(pageableRequest);
+		characters = charactersPage.getContent();
 		
 		for(CharacterEntity characterEntity : characters) {
 			CharacterDto characterDto = new CharacterDto();

@@ -6,6 +6,8 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,27 +34,27 @@ public class MovieController {
 	MovieService movieService;
 	
 	@GetMapping(path="/{id}")
-	public MovieRest getMovie(@PathVariable String id) throws Exception {
+	public ResponseEntity<MovieRest> getMovie(@PathVariable String id) throws Exception {
 		MovieRest returnValue = new MovieRest();
 		
 		MovieDto movieDto = movieService.getMovieById(id);
 		BeanUtils.copyProperties(movieDto, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<MovieRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/details/{id}")
-	public MovieDetailsRest getMovieDetails(@PathVariable String id) throws Exception {
+	public ResponseEntity<MovieDetailsRest> getMovieDetails(@PathVariable String id) throws Exception {
 		MovieDetailsRest returnValue = new MovieDetailsRest();
 		
 		MovieDto movieDto = movieService.getMovieById(id);
 		BeanUtils.copyProperties(movieDto, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<MovieDetailsRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@GetMapping
-	public List<MovieRest> getMovies(@RequestParam(value="page", defaultValue="0") int page,
+	public ResponseEntity<List<MovieRest>> getMovies(@RequestParam(value="page", defaultValue="0") int page,
 								   @RequestParam(value="limit", defaultValue="25") int limit) {
 		List<MovieRest> returnValue = new ArrayList<>();
 		
@@ -64,12 +66,12 @@ public class MovieController {
 			returnValue.add(movieModel);
 		}
 		
-		return returnValue;
+		return new ResponseEntity<List<MovieRest>>(returnValue, HttpStatus.OK);
 		
 	}
 	
 	@PostMapping
-	public MovieRest createMovie(@RequestBody MovieDetailsRequestModel movieDetails) {
+	public ResponseEntity<MovieRest> createMovie(@RequestBody MovieDetailsRequestModel movieDetails) {
 		MovieRest returnValue = new MovieRest();
 		
 		if(movieDetails.getTitle().isEmpty()
@@ -83,11 +85,11 @@ public class MovieController {
 		MovieDto createdMovie = movieService.createMovie(movieDto);
 		returnValue = modelMapper.map(createdMovie, MovieRest.class);
 		
-		return returnValue;
+		return new ResponseEntity<MovieRest>(returnValue, HttpStatus.CREATED);
 	}
 	
 	@PutMapping(path="/{id}")
-	public MovieRest updateMovie(@PathVariable String id, @RequestBody MovieDetailsRequestModel movieDetails) {
+	public ResponseEntity<MovieRest> updateMovie(@PathVariable String id, @RequestBody MovieDetailsRequestModel movieDetails) {
 		MovieRest returnValue = new MovieRest();
 
 		MovieDto movieDto = new MovieDto();
@@ -96,11 +98,12 @@ public class MovieController {
 		MovieDto updatedMovie = movieService.updateMovie(id, movieDto);
 		BeanUtils.copyProperties(updatedMovie, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<MovieRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path="/{id}")
-	public void deleteMovie(@PathVariable String id) {		
-		movieService.deleteMovie(id);
+	public ResponseEntity<Void> deleteMovie(@PathVariable String id) {		
+		movieService.deleteMovie(id);		
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

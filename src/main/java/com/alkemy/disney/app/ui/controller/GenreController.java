@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,17 +32,17 @@ public class GenreController {
 	GenreService genreService;
 	
 	@GetMapping(path="/{id}")
-	public GenreRest getGenre(@PathVariable String id) throws Exception {
+	public ResponseEntity<GenreRest> getGenre(@PathVariable String id) throws Exception {
 		GenreRest returnValue = new GenreRest();
 		
 		GenreDto genreDto = genreService.getGenreById(id);
 		BeanUtils.copyProperties(genreDto, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<GenreRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@GetMapping
-	public List<GenreRest> getGenres(@RequestParam(value="page", defaultValue="0") int page,
+	public ResponseEntity<List<GenreRest>> getGenres(@RequestParam(value="page", defaultValue="0") int page,
 								   @RequestParam(value="limit", defaultValue="25") int limit) {
 		List<GenreRest> returnValue = new ArrayList<>();
 		
@@ -52,12 +54,12 @@ public class GenreController {
 			returnValue.add(genreModel);
 		}
 		
-		return returnValue;
+		return new ResponseEntity<List<GenreRest>>(returnValue, HttpStatus.OK);
 		
 	}
 	
 	@PostMapping
-	public GenreRest createGenre(@RequestBody GenreDetailsRequestModel genreDetails) {
+	public ResponseEntity<GenreRest> createGenre(@RequestBody GenreDetailsRequestModel genreDetails) {
 		GenreRest returnValue = new GenreRest();
 		
 		if(genreDetails.getName().isEmpty()
@@ -71,11 +73,11 @@ public class GenreController {
 		GenreDto createdGenre = genreService.createGenre(genreDto);
 		BeanUtils.copyProperties(createdGenre, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<GenreRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@PutMapping(path="/{id}")
-	public GenreRest updateGenre(@PathVariable String id, @RequestBody GenreDetailsRequestModel genreDetails) {
+	public ResponseEntity<GenreRest> updateGenre(@PathVariable String id, @RequestBody GenreDetailsRequestModel genreDetails) {
 		GenreRest returnValue = new GenreRest();
 
 		GenreDto genreDto = new GenreDto();
@@ -84,11 +86,12 @@ public class GenreController {
 		GenreDto updatedGenre = genreService.updateGenre(id, genreDto);
 		BeanUtils.copyProperties(updatedGenre, returnValue);
 		
-		return returnValue;
+		return new ResponseEntity<GenreRest>(returnValue, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path="/{id}")
-	public void deleteGenre(@PathVariable String id) {		
+	public ResponseEntity<Void> deleteGenre(@PathVariable String id) {		
 		genreService.deleteGenre(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }
