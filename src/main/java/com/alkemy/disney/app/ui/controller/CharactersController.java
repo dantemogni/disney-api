@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.disney.app.exceptions.CharacterServiceException;
 import com.alkemy.disney.app.service.CharacterService;
+import com.alkemy.disney.app.service.MovieService;
 import com.alkemy.disney.app.shared.dto.CharacterDto;
 import com.alkemy.disney.app.ui.model.request.CharacterDetailsRequestModel;
 import com.alkemy.disney.app.ui.model.response.CharacterDetailsRest;
@@ -32,6 +33,9 @@ public class CharactersController {
 	
 	@Autowired
 	CharacterService characterService;
+	
+	@Autowired
+	MovieService movieService;
 	
 	@GetMapping(path="/{id}")
 	public ResponseEntity<CharacterRest> getCharacter(@PathVariable String id) throws Exception {
@@ -60,7 +64,7 @@ public class CharactersController {
 									@RequestParam(value = "movies", required = false) String movieId,
 									@RequestParam(value="page", defaultValue="0") int page,
 									@RequestParam(value="limit", defaultValue="25") int limit) {
-		
+	
 		List<CharacterRest> returnValue = new ArrayList<>();
 		
 		List<CharacterDto> characters = characterService.getCharacters(name, age, movieId, page, limit);

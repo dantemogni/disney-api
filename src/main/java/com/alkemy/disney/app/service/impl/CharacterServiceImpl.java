@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.alkemy.disney.app.exceptions.CharacterServiceException;
@@ -19,6 +20,10 @@ import com.alkemy.disney.app.io.repository.MovieRepository;
 import com.alkemy.disney.app.service.CharacterService;
 import com.alkemy.disney.app.shared.Utils;
 import com.alkemy.disney.app.shared.dto.CharacterDto;
+import com.alkemy.disney.app.shared.dto.MovieDto;
+import com.alkemy.disney.app.shared.spec.character.CharacterWithAge;
+import com.alkemy.disney.app.shared.spec.character.CharacterWithMovie;
+import com.alkemy.disney.app.shared.spec.character.CharacterWithName;
 
 @Service
 public class CharacterServiceImpl implements CharacterService{
@@ -100,24 +105,28 @@ public class CharacterServiceImpl implements CharacterService{
 		List<CharacterDto> returnValue = new ArrayList<>();
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
-		
 		Page<CharacterEntity> charactersPage;
 		
 		List<CharacterEntity> characters = new ArrayList<>();
 		
-		//if(name != null) {
-		//	characters.add(characterRepository.findByName(name, pageableRequest));
-		//}
+		// Trae la pelicula del query
+		MovieDto movieDto = new MovieDto();
+		if(movieId != null) {
+			MovieEntity movieInCharacter = movieRepository.findByMovieId(movieId);
+			
+			//TODO: Manejar la excepcion
+			if(movieInCharacter == null) throw new CharacterServiceException("Movie not found");
+			
+			BeanUtils.copyProperties(movieInCharacter, movieDto);
+		}
 
-		//if(age != null) {
-		//	characters.add(characterRepository.findByAge(age, pageableRequest));
-		//}
-		
-		//if(movieId != null) {
-		//	aux.add(characterRepository.findByLinkedMovies(movieId));
-		//}
+		// Hace el filtrado de queries
+		Specification<CharacterEntity> spec = Specification
+				.where(new CharacterWithName(name))
+				.and(new CharacterWithAge(age))
+				.and(new CharacterWithMovie(movieDto));
 
-		charactersPage = characterRepository.findAll(pageableRequest);
+ 		charactersPage = characterRepository.findAll(spec, pageableRequest);
 		characters = charactersPage.getContent();
 		
 		for(CharacterEntity characterEntity : characters) {
